@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMAI - Smart Farming Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --primary-light: #4caf50;
+            --secondary: #ff9800;
+            --accent: #8bc34a;
+            --text: #333333;
+            --text-light: #666666;
+            --background: #f9f9f9;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 2.8rem;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 3rem 0;
+            text-align: center;
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--text-light);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #e68900;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-success {
+            background-color: #4caf50;
+        }
+
+        .btn-success:hover {
+            background-color: #45a049;
+        }
+
+        .btn-danger {
+            background-color: #f44336;
+        }
+
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Tools Section */
+        .tools {
+            padding: 4rem 0;
+            flex: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .tool-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .tool-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            transform: scale(1.2);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+            outline: none;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* GPS Map Container */
+        .map-container {
+            height: 300px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            border: 1px solid #ddd;
+            background-color: #e9f5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .map-placeholder {
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .map-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .coordinates {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Drone Control Panel */
+        .drone-controls {
+            background-color: #f5f5f5;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .drone-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+        }
+
+        .status-connected {
+            background-color: #4caf50;
+        }
+
+        .status-disconnected {
+            background-color: #f44336;
+        }
+
+        .control-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .control-btn {
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .control-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spray-control {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .spray-progress {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .spray-progress-bar {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Image Upload */
+        .image-upload {
+            border: 2px dashed #ddd;
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .image-upload:hover {
+            border-color: var(--primary);
+            background-color: #f9f9f9;
+        }
+
+        .image-upload i {
+            font-size: 3rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin: 1rem auto;
+            display: none;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        /* Results Section */
+        .results {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #f0f7f0;
+            border-radius: var(--radius);
+            display: none;
+        }
+
+        .results h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .results ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .results li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Tool-specific styles */
+        .crop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .crop-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .crop-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .crop-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .price-table th, .price-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .price-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .price-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Footer */
+        .simple-footer {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                height: 95%;
+            }
+            
+            .control-buttons {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .crop-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                <span>SMAI</span>
+            </div>
+            <p class="tagline">Smart Farming AI Assistant - Precision Agriculture with GPS & Drones</p>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Precision Farming with AI & Drone Technology</h1>
+            <p>SMAI provides intelligent solutions for automated land mapping, drone-controlled spraying, crop management, and disease detection. Harness the power of GPS and drone technology for precision agriculture.</p>
+            <a href="#tools" class="btn btn-primary">Explore Tools</a>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools" id="tools">
+        <div class="container">
+            <div class="section-title">
+                <h2>AI Farming Tools</h2>
+                <p>Select any tool to get started with AI-powered farming assistance</p>
+            </div>
+            <div class="tools-grid">
+                <a class="tool-card" onclick="openModal('gps-land-detection')">
+                    <div class="tool-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>GPS Land Detection</h3>
+                    <p>Automatically detect your land using GPS, set acreage, and connect drones for precision spraying.</p>
+                    <div class="btn">Open Tool</div>
+                </a>
+                
+                <a class="tool-card" onclick="openModal('disease-detection')">
+                    <div class="tool-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Disease Detection</h3>
+                    <p>Upload images of your crops to identify diseases and get treatment recommendations.</p>
+                    <div class="btn">Open Tool</div>
+                </a>
+                
+                <a class="tool-card" onclick="openModal('crop-recommendation')">
+                    <div class="tool-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Crop Recommendation</h3>
+                    <p>Get personalized crop suggestions based on your soil type, location, and climate conditions.</p>
+                    <div class="btn">Open Tool</div>
+                </a>
+                
+                <a class="tool-card" onclick="openModal('yield-prediction')">
+                    <div class="tool-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Yield Prediction</h3>
+                    <p>Forecast your crop yields using historical data and current growing conditions.</p>
+                    <div class="btn">Open Tool</div>
+                </a>
+                
+                <a class="tool-card" onclick="openModal('irrigation-advice')">
+                    <div class="tool-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3>Irrigation Advice</h3>
+                    <p>Optimize water usage with AI-powered irrigation scheduling based on weather forecasts.</p>
+                    <div class="btn">Open Tool</div>
+                </a>
+                
+                <a class="tool-card" onclick="openModal('market-insights')">
+                    <div class="tool-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3>Market Insights</h3>
+                    <p>Access real-time market prices and trends to maximize your profits.</p>
+                    <div class="btn">Open Tool</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- GPS Land Detection Modal -->
+    <div class="modal" id="gps-land-detection-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-map-marker-alt"></i> GPS Land Detection & Drone Control</h3>
+                <button class="close-modal" onclick="closeModal('gps-land-detection')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Automatically detect your land location using GPS and set up drone-controlled spraying.</p>
+                
+                <div class="form-group">
+                    <label for="landArea">Land Area (acres)</label>
+                    <input type="number" id="landArea" class="form-control" placeholder="Enter land area in acres">
+                </div>
+                
+                <div class="form-group">
+                    <label for="sprayType">Spray Type</label>
+                    <select id="sprayType" class="form-control">
+                        <option value="">Select spray type</option>
+                        <option value="pesticide">Pesticide</option>
+                        <option value="fertilizer">Fertilizer</option>
+                        <option value="herbicide">Herbicide</option>
+                        <option value="water">Water</option>
+                    </select>
+                </div>
+                
+                <div class="map-container">
+                    <div class="map-placeholder" id="mapPlaceholder">
+                        <i class="fas fa-map"></i>
+                        <p>Click "Detect Location" to map your land</p>
+                    </div>
+                    <div class="coordinates" id="coordinates" style="display: none;">
+                        Latitude: <span id="latitude">0</span>, Longitude: <span id="longitude">0</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" id="detectLocation">
+                    <i class="fas fa-location-arrow"></i> Detect My Location
+                </button>
+                
+                <div class="loading" id="gpsLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Detecting your location...</p>
+                </div>
+                
+                <div class="results" id="gpsResults">
+                    <h4>Land Information</h4>
+                    <div id="gpsResultContent"></div>
+                </div>
+                
+                <!-- Drone Control Section -->
+                <div class="drone-controls" id="droneControls" style="display: none;">
+                    <h4><i class="fas fa-drone"></i> Drone Control</h4>
+                    
+                    <div class="drone-status">
+                        <div class="status-indicator" id="droneStatusIndicator"></div>
+                        <span id="droneStatusText">Drone Disconnected</span>
+                    </div>
+                    
+                    <button class="btn btn-success" id="connectDrone">
+                        <i class="fas fa-plug"></i> Connect Drone
+                    </button>
+                    
+                    <button class="btn btn-danger" id="disconnectDrone" style="display: none;">
+                        <i class="fas fa-power-off"></i> Disconnect Drone
+                    </button>
+                    
+                    <div class="control-buttons" id="droneControlButtons" style="display: none;">
+                        <button class="control-btn" id="takeoffBtn"><i class="fas fa-arrow-up"></i> Take Off</button>
+                        <button class="control-btn" id="landBtn" disabled><i class="fas fa-arrow-down"></i> Land</button>
+                        <button class="control-btn" id="startSprayBtn" disabled><i class="fas fa-spray-can"></i> Start Spraying</button>
+                        <button class="control-btn" id="stopSprayBtn" disabled><i class="fas fa-stop"></i> Stop Spraying</button>
+                        <button class="control-btn" id="returnHomeBtn" disabled><i class="fas fa-home"></i> Return Home</button>
+                        <button class="control-btn" id="emergencyBtn"><i class="fas fa-exclamation-triangle"></i> Emergency Stop</button>
+                    </div>
+                    
+                    <div class="spray-control" id="sprayControl" style="display: none;">
+                        <h5>Spraying Progress</h5>
+                        <div class="spray-progress">
+                            <div class="spray-progress-bar" id="sprayProgressBar"></div>
+                        </div>
+                        <p id="sprayStatus">Ready to start spraying</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disease Detection Modal -->
+    <div class="modal" id="disease-detection-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-leaf"></i> Disease Detection</h3>
+                <button class="close-modal" onclick="closeModal('disease-detection')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Upload an image of your crop to identify diseases and get treatment recommendations.</p>
+                
+                <div class="image-upload" id="imageUpload">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Click to upload an image of your crop</p>
+                    <input type="file" id="diseaseImage" accept="image/*" style="display: none;">
+                </div>
+                
+                <img id="imagePreview" class="image-preview" alt="Image preview">
+                
+                <div class="form-group">
+                    <label for="cropType">Crop Type</label>
+                    <select id="cropType" class="form-control">
+                        <option value="">Select crop type</option>
+                        <option value="tomato">Tomato</option>
+                        <option value="corn">Corn</option>
+                        <option value="wheat">Wheat</option>
+                        <option value="rice">Rice</option>
+                        <option value="potato">Potato</option>
+                        <option value="soybean">Soybean</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary" id="analyzeDisease">Analyze Image</button>
+                
+                <div class="loading" id="diseaseLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Analyzing image for diseases...</p>
+                </div>
+                
+                <div class="results" id="diseaseResults">
+                    <h4>Analysis Results</h4>
+                    <div id="diseaseResultContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other Tool Modals (simplified for brevity) -->
+    <div class="modal" id="crop-recommendation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-seedling"></i> Crop Recommendation</h3>
+                <button class="close-modal" onclick="closeModal('crop-recommendation')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Get personalized crop suggestions based on your farm conditions.</p>
+                <div class="btn" style="margin-top: 1rem;">Tool Implementation Similar to Previous</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="yield-prediction-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-chart-line"></i> Yield Prediction</h3>
+                <button class="close-modal" onclick="closeModal('yield-prediction')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Forecast your crop yields using historical data and current growing conditions.</p>
+                <div class="btn" style="margin-top: 1rem;">Tool Implementation Similar to Previous</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="irrigation-advice-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-tint"></i> Irrigation Advice</h3>
+                <button class="close-modal" onclick="closeModal('irrigation-advice')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Get AI-powered irrigation recommendations based on weather forecasts and soil conditions.</p>
+                <div class="btn" style="margin-top: 1rem;">Tool Implementation Similar to Previous</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="market-insights-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-shopping-cart"></i> Market Insights</h3>
+                <button class="close-modal" onclick="closeModal('market-insights')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Get real-time market prices and trends for your crops.</p>
+                <div class="btn" style="margin-top: 1rem;">Tool Implementation Similar to Previous</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple Footer -->
+    <footer class="simple-footer">
+        <div class="container">
+            <p>&copy; 2023 SMAI - Smart Farming AI Assistant. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Modal Management
+        function openModal(toolId) {
+            document.getElementById(`${toolId}-modal`).style.display = 'flex';
+        }
+
+        function closeModal(toolId) {
+            document.getElementById(`${toolId}-modal`).style.display = 'none';
+        }
+
+        // Close modal when clicking outside content
+        window.addEventListener('click', function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+        // Initialize all tool functionality when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeGPSLandDetection();
+            initializeDiseaseDetection();
+        });
+
+        // GPS Land Detection Functionality
+        function initializeGPSLandDetection() {
+            const detectLocationBtn = document.getElementById('detectLocation');
+            const gpsLoading = document.getElementById('gpsLoading');
+            const gpsResults = document.getElementById('gpsResults');
+            const gpsResultContent = document.getElementById('gpsResultContent');
+            const coordinates = document.getElementById('coordinates');
+            const mapPlaceholder = document.getElementById('mapPlaceholder');
+            const connectDroneBtn = document.getElementById('connectDrone');
+            const disconnectDroneBtn = document.getElementById('disconnectDrone');
+            const droneControlButtons = document.getElementById('droneControlButtons');
+            const droneControls = document.getElementById('droneControls');
+            const droneStatusIndicator = document.getElementById('droneStatusIndicator');
+            const droneStatusText = document.getElementById('droneStatusText');
+            const takeoffBtn = document.getElementById('takeoffBtn');
+            const landBtn = document.getElementById('landBtn');
+            const startSprayBtn = document.getElementById('startSprayBtn');
+            const stopSprayBtn = document.getElementById('stopSprayBtn');
+            const returnHomeBtn = document.getElementById('returnHomeBtn');
+            const emergencyBtn = document.getElementById('emergencyBtn');
+            const sprayControl = document.getElementById('sprayControl');
+            const sprayProgressBar = document.getElementById('sprayProgressBar');
+            const sprayStatus = document.getElementById('sprayStatus');
+
+            let droneConnected = false;
+            let droneInAir = false;
+            let sprayingActive = false;
+            let sprayInterval;
+
+            // Detect Location
+            detectLocationBtn.addEventListener('click', function() {
+                const landArea = document.getElementById('landArea').value;
+                const sprayType = document.getElementById('sprayType').value;
+                
+                if (!landArea) {
+                    alert('Please enter land area');
+                    return;
+                }
+                
+                if (!sprayType) {
+                    alert('Please select spray type');
+                    return;
+                }
+                
+                gpsLoading.style.display = 'block';
+                gpsResults.style.display = 'none';
+                
+                // Simulate GPS detection
+                setTimeout(() => {
+                    gpsLoading.style.display = 'none';
+                    gpsResults.style.display = 'block';
+                    coordinates.style.display = 'block';
+                    mapPlaceholder.style.display = 'none';
+                    droneControls.style.display = 'block';
+                    
+                    // Generate random coordinates (in a real app, this would come from GPS)
+                    const lat = (Math.random() * 180 - 90).toFixed(6);
+                    const lng = (Math.random() * 360 - 180).toFixed(6);
+                    
+                    document.getElementById('latitude').textContent = lat;
+                    document.getElementById('longitude').textContent = lng;
+                    
+                    gpsResultContent.innerHTML = `
+                        <p><strong>Location Detected:</strong> ${lat}, ${lng}</p>
+                        <p><strong>Land Area:</strong> ${landArea} acres</p>
+                        <p><strong>Spray Type:</strong> ${sprayType}</p>
+                        <p><strong>Estimated Spray Time:</strong> ${Math.round(landArea * 2.5)} minutes</p>
+                        <p><strong>Estimated Spray Quantity:</strong> ${landArea * 10} liters</p>
+                        <p><strong>Recommended Spray Pattern:</strong> Grid pattern for optimal coverage</p>
+                    `;
+                }, 2000);
+            });
+
+            // Connect Drone
+            connectDroneBtn.addEventListener('click', function() {
+                // Simulate drone connection
+                setTimeout(() => {
+                    droneConnected = true;
+                    droneStatusIndicator.classList.add('status-connected');
+                    droneStatusIndicator.classList.remove('status-disconnected');
+                    droneStatusText.textContent = 'Drone Connected';
+                    connectDroneBtn.style.display = 'none';
+                    disconnectDroneBtn.style.display = 'inline-block';
+                    droneControlButtons.style.display = 'grid';
+                    sprayControl.style.display = 'block';
+                }, 1500);
+            });
+
+            // Disconnect Drone
+            disconnectDroneBtn.addEventListener('click', function() {
+                droneConnected = false;
+                droneInAir = false;
+                sprayingActive = false;
+                droneStatusIndicator.classList.remove('status-connected');
+                droneStatusIndicator.classList.add('status-disconnected');
+                droneStatusText.textContent = 'Drone Disconnected';
+                connectDroneBtn.style.display = 'inline-block';
+                disconnectDroneBtn.style.display = 'none';
+                droneControlButtons.style.display = 'none';
+                sprayControl.style.display = 'none';
+                
+                // Reset buttons
+                takeoffBtn.disabled = false;
+                landBtn.disabled = true;
+                startSprayBtn.disabled = true;
+                stopSprayBtn.disabled = true;
+                returnHomeBtn.disabled = true;
+                
+                // Stop any active spraying
+                clearInterval(sprayInterval);
+                sprayProgressBar.style.width = '0%';
+                sprayStatus.textContent = 'Drone Disconnected';
+            });
+
+            // Drone Controls
+            takeoffBtn.addEventListener('click', function() {
+                if (!droneConnected) return;
+                
+                // Simulate takeoff
+                sprayStatus.textContent = 'Drone Taking Off...';
+                setTimeout(() => {
+                    droneInAir = true;
+                    takeoffBtn.disabled = true;
+                    landBtn.disabled = false;
+                    startSprayBtn.disabled = false;
+                    returnHomeBtn.disabled = false;
+                    sprayStatus.textContent = 'Drone in Air - Ready to Spray';
+                }, 2000);
+            });
+
+            landBtn.addEventListener('click', function() {
+                if (!droneConnected || !droneInAir) return;
+                
+                // Stop spraying if active
+                if (sprayingActive) {
+                    clearInterval(sprayInterval);
+                    sprayingActive = false;
+                    startSprayBtn.disabled = false;
+                    stopSprayBtn.disabled = true;
+                }
+                
+                // Simulate landing
+                sprayStatus.textContent = 'Drone Landing...';
+                setTimeout(() => {
+                    droneInAir = false;
+                    takeoffBtn.disabled = false;
+                    landBtn.disabled = true;
+                    startSprayBtn.disabled = true;
+                    stopSprayBtn.disabled = true;
+                    returnHomeBtn.disabled = true;
+                    sprayProgressBar.style.width = '0%';
+                    sprayStatus.textContent = 'Drone Landed';
+                }, 2000);
+            });
+
+            startSprayBtn.addEventListener('click', function() {
+                if (!droneConnected || !droneInAir) return;
+                
+                sprayingActive = true;
+                startSprayBtn.disabled = true;
+                stopSprayBtn.disabled = false;
+                
+                // Simulate spraying progress
+                let progress = 0;
+                const landArea = document.getElementById('landArea').value;
+                const totalTime = landArea * 2.5 * 60; // Convert to seconds
+                
+                sprayStatus.textContent = 'Spraying in Progress...';
+                
+                sprayInterval = setInterval(() => {
+                    progress += (100 / totalTime) * 2;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(sprayInterval);
+                        sprayingActive = false;
+                        startSprayBtn.disabled = false;
+                        stopSprayBtn.disabled = true;
+                        sprayStatus.textContent = 'Spraying Completed!';
+                    }
+                    sprayProgressBar.style.width = `${progress}%`;
+                }, 2000);
+            });
+
+            stopSprayBtn.addEventListener('click', function() {
+                if (!sprayingActive) return;
+                
+                clearInterval(sprayInterval);
+                sprayingActive = false;
+                startSprayBtn.disabled = false;
+                stopSprayBtn.disabled = true;
+                sprayStatus.textContent = 'Spraying Stopped';
+            });
+
+            returnHomeBtn.addEventListener('click', function() {
+                if (!droneConnected || !droneInAir) return;
+                
+                // Stop spraying if active
+                if (sprayingActive) {
+                    clearInterval(sprayInterval);
+                    sprayingActive = false;
+                    startSprayBtn.disabled = false;
+                    stopSprayBtn.disabled = true;
+                }
+                
+                // Simulate return to home
+                sprayStatus.textContent = 'Returning to Home...';
+                setTimeout(() => {
+                    droneInAir = false;
+                    takeoffBtn.disabled = false;
+                    landBtn.disabled = true;
+                    startSprayBtn.disabled = true;
+                    stopSprayBtn.disabled = true;
+                    returnHomeBtn.disabled = true;
+                    sprayProgressBar.style.width = '0%';
+                    sprayStatus.textContent = 'Drone Returned Home';
+                }, 3000);
+            });
+
+            emergencyBtn.addEventListener('click', function() {
+                // Emergency stop - immediately land and stop all activities
+                if (sprayingActive) {
+                    clearInterval(sprayInterval);
+                    sprayingActive = false;
+                }
+                
+                droneInAir = false;
+                takeoffBtn.disabled = false;
+                landBtn.disabled = true;
+                startSprayBtn.disabled = true;
+                stopSprayBtn.disabled = true;
+                returnHomeBtn.disabled = true;
+                sprayProgressBar.style.width = '0%';
+                sprayStatus.textContent = 'EMERGENCY STOP - Drone Landed';
+                
+                alert('EMERGENCY STOP ACTIVATED! Drone has landed immediately.');
+            });
+        }
+
+        // Disease Detection Functionality
+        function initializeDiseaseDetection() {
+            const imageUpload = document.getElementById('imageUpload');
+            const diseaseImage = document.getElementById('diseaseImage');
+            const imagePreview = document.getElementById('imagePreview');
+            const analyzeDiseaseBtn = document.getElementById('analyzeDisease');
+            const diseaseLoading = document.getElementById('diseaseLoading');
+            const diseaseResults = document.getElementById('diseaseResults');
+            const diseaseResultContent = document.getElementById('diseaseResultContent');
+
+            // Image Upload Preview
+            imageUpload.addEventListener('click', () => {
+                diseaseImage.click();
+            });
+
+            diseaseImage.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    }
+                    
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Analyze Disease
+            analyzeDiseaseBtn.addEventListener('click', function() {
+                const cropType = document.getElementById('cropType').value;
+                
+                if (!cropType) {
+                    alert('Please select a crop type');
+                    return;
+                }
+                
+                if (!diseaseImage.files[0]) {
+                    alert('Please upload an image of the affected plant');
+                    return;
+                }
+                
+                diseaseLoading.style.display = 'block';
+                diseaseResults.style.display = 'none';
+                
+                // Simulate API processing
+                setTimeout(() => {
+                    diseaseLoading.style.display = 'none';
+                    diseaseResults.style.display = 'block';
+                    
+                    const diseases = {
+                        'tomato': {
+                            name: 'Early Blight',
+                            confidence: '92%',
+                            description: 'Early blight is a common fungal disease that affects tomatoes, characterized by concentric rings on leaves.',
+                            treatment: 'Apply copper-based fungicide every 7-10 days. Remove affected leaves. Improve air circulation.',
+                            prevention: 'Rotate crops annually. Use resistant varieties. Avoid overhead watering.'
+                        },
+                        'corn': {
+                            name: 'Northern Corn Leaf Blight',
+                            confidence: '87%',
+                            description: 'Long, elliptical gray-green lesions that turn tan as they mature.',
+                            treatment: 'Apply fungicide containing azoxystrobin or pyraclostrobin.',
+                            prevention: 'Plant resistant hybrids. Practice crop rotation.'
+                        },
+                        'wheat': {
+                            name: 'Wheat Rust',
+                            confidence: '85%',
+                            description: 'Orange to reddish-brown pustules on leaves and stems.',
+                            treatment: 'Apply fungicides like propiconazole or tebuconazole.',
+                            prevention: 'Plant resistant varieties. Avoid excessive nitrogen fertilization.'
+                        }
+                    };
+                    
+                    const result = diseases[cropType] || {
+                        name: 'Common Fungal Infection',
+                        confidence: '78%',
+                        description: 'This appears to be a common fungal infection affecting your crop.',
+                        treatment: 'Apply a broad-spectrum fungicide. Improve plant spacing for better air circulation.',
+                        prevention: 'Practice crop rotation. Remove plant debris at season end.'
+                    };
+                    
+                    diseaseResultContent.innerHTML = `
+                        <p><strong>Disease Identified:</strong> ${result.name}</p>
+                        <p><strong>Confidence:</strong> ${result.confidence}</p>
+                        <p><strong>Description:</strong> ${result.description}</p>
+                        <p><strong>Treatment:</strong> ${result.treatment}</p>
+                        <p><strong>Prevention:</strong> ${result.prevention}</p>
+                        <p><strong>AI Recommendation:</strong> Consider using our GPS Land Detection tool with drone spraying for precise application of treatments.</p>
+                    `;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
