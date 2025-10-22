@@ -36,10 +36,79 @@
             flex-direction: column;
         }
 
+        /* Intro Animation - Same as SMAI Medical & Learning */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #212529;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease;
+        }
+
+        .intro-logo {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        .intro-text {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1s;
+            color: white;
+        }
+
+        .intro-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .intro-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            animation: progress 3s forwards;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes progress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1s;
         }
 
         /* Header Styles */
@@ -584,6 +653,15 @@
     </style>
 </head>
 <body>
+    <!-- Intro Animation - Same as SMAI Medical & Learning -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-logo">SMAI</div>
+        <div class="intro-text">Smart Farming AI Assistant</div>
+        <div class="intro-progress">
+            <div class="intro-progress-bar"></div>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="main-header">
         <div class="container">
@@ -865,6 +943,22 @@
     </footer>
 
     <script>
+        // Initialize intro animation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide intro after 3 seconds
+            setTimeout(function() {
+                const introOverlay = document.getElementById('introOverlay');
+                introOverlay.style.opacity = '0';
+                setTimeout(function() {
+                    introOverlay.style.display = 'none';
+                }, 1000);
+            }, 3000);
+            
+            // Initialize tool functionality
+            initializeGPSLandDetection();
+            initializeDiseaseDetection();
+        });
+
         // Modal Management
         function openModal(toolId) {
             document.getElementById(`${toolId}-modal`).style.display = 'flex';
@@ -882,12 +976,6 @@
                     modal.style.display = 'none';
                 }
             });
-        });
-
-        // Initialize all tool functionality when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeGPSLandDetection();
-            initializeDiseaseDetection();
         });
 
         // GPS Land Detection Functionality
